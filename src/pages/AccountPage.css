@@ -1,0 +1,66 @@
+.account-page {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: sans-serif;
+  }
+  
+  .account-page h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .profile-photo {
+    margin-bottom: 16px;
+  }
+  
+  .profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .account-page input[type="text"],
+  .account-page textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  .account-page button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .account-page button:hover {
+    background-color: #0056b3;
+  }
+  

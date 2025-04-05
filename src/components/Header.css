@@ -1,0 +1,146 @@
+/* Общий стиль шапки */
+.header {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Высота шапки уменьшена */
+    background-image: url('../assets/header-bg.png');
+    background-size: cover; /* Покрывает всю шапку */
+    background-position: center; /* Центрируем изображение */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer; /* Указываем, что шапка кликабельна */
+  }
+  
+  /* Контейнер для контента шапки */
+  .header-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px; /* Отступы внутри шапки */
+    box-sizing: border-box;
+  }
+  
+  /* Правая часть (поиск и кнопки) */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между элементами */
+  }
+  
+  /* Иконки */
+  .header-icon {
+    text-decoration: none;
+    color: #1d3442;
+    font-size: 24px; /* Размер иконок */
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .header-icon:hover {
+    color: #df4d4d;
+    transform: scale(1.1); /* Увеличение при наведении */
+  }
+  
+  /* Строка поиска */
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    font-size: 15px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .search-bar:focus {
+    border-color: #1d3442;
+    box-shadow: 0 0 10px #1d3442;
+  }
+  
+  /* Кнопка закрытия поиска */
+.close-search-button {
+  background: #e5fff5;
+  color: #FF5722;
+  border: none;
+  padding: 8px;
+  font-size: 22px;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+/* Эффект увеличения при наведении */
+.close-search-button:hover {
+  transform: scale(1.2); /* Увеличение на 20% */
+}
+
+  
+
+  
+  /* Кнопка "Поиск" */
+.search-button {
+  background: #e5fff5;
+  color: #1d3442;
+  border: none;
+  padding: 10px;
+  font-size: 23px;
+  font-weight: bold;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Эффект подсветки при наведении */
+.search-button:hover {
+  background: #c0ffe3; /* Меняем цвет фона */
+  box-shadow: 0 0 30px rgba(0, 255, 150, 0.5); /* Добавляем подсветку */
+}
+  
+
+  
+  /* Адаптивность */
+  @media (max-width: 768px) {
+    .header {
+      height: 80px; /* Уменьшаем высоту на планшетах */
+    }
+  
+    .search-bar {
+      font-size: 14px;
+      padding: 6px;
+    }
+  
+    .search-button,
+    .close-search-button,
+    .header-icon {
+      font-size: 20px; /* Уменьшаем размер иконок */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      height: 70px; /* Ещё меньше на мобильных */
+    }
+  
+    .search-bar {
+      font-size: 12px;
+      padding: 6px;
+    }
+  
+    .search-button,
+    .close-search-button,
+    .header-icon {
+      font-size: 18px; /* Ещё меньше размер на мобильных */
+    }
+  }
+  

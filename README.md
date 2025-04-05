@@ -1,0 +1,1 @@
+Syntax of Paradise shop - лучший выдуманный магазин!
