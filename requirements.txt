@@ -1,0 +1,10 @@
+fastapi
+sqlalchemy
+pydantic
+pydantic_settings
+psycopg
+passlib[bcrypt]
+jose
+python-jose
+bcrypt==4.0.1
+smtplib

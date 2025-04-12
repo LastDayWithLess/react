@@ -6,17 +6,34 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.username === username && u.password === password);
+    const formData = new URLSearchParams();
+    formData.append('grant_type', 'password');
+    formData.append('username', username);
+    formData.append('password', password);
 
-    if (user) {
-      onLogin();
-      navigate('/'); // редирект на главную
-    } else {
-      alert('Неверный логин или пароль');
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),
+      });
+
+      if (!response.ok) {
+        throw new Error('Неверный логин или пароль');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('access_token', data.access_token);
+
+      onLogin(); 
+      navigate('/'); 
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -29,13 +46,13 @@ const LoginPage = ({ onLogin }) => {
           placeholder="Логин"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-        /><br/>
+        /><br />
         <input
           type="password"
           placeholder="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        /><br/>
+        /><br />
         <button type="submit">Войти</button>
       </form>
       <p>Нет аккаунта? <Link to="/register">Зарегистрироваться</Link></p>
