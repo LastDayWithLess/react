@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useCallback } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import BrandSlider from './components/BrandSlider';
 import Header from './components/Header';
@@ -9,6 +9,7 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AccountPage from './pages/AccountPage';
+import CheckEmailPage from './pages/CheckEmailPage.js';
 import './App.css';
 
 import banner1 from './assets/banner1.png';
@@ -46,13 +47,20 @@ function App() {
     return () => clearInterval(interval);
   }, [banners.length]);
 
-  const addToCart = (product) => setCartItems((prevItems) => [...prevItems, product]);
-  const removeFromCart = (itemId) => setCartItems((prevItems) => prevItems.filter(item => item.id !== itemId));
+  const addToCart = useCallback((product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
+  }, []);
+
+  const removeFromCart = useCallback((itemId) => {
+    setCartItems((prevItems) => prevItems.filter(item => item.id !== itemId));
+  }, []);
+
   const openModal = (product) => {
     setSelectedProduct(product);
     setSelectedSize('');
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
@@ -62,17 +70,57 @@ function App() {
     setZoomedImageIndex(zoomedImageIndex === index ? null : index);
   };
 
-  const handleAddToCartOrFavorites = (action) => {
+  const handleAddToCartOrFavorites = async (action) => {
+    if (!selectedProduct) return;
+
     if (!selectedSize) {
       alert('Выберите размер перед добавлением!');
       return;
     }
+
     if (action === 'Товар в корзину') {
       addToCart(selectedProduct);
-      alert(`${selectedProduct.name} добавлен в корзину, размер: ${selectedSize}`);
+
+      const cartData = {
+        name: selectedProduct.name,
+        images: selectedProduct.images[0],
+        price: selectedProduct.price,
+      };
+      
+
+      try {
+        const response = await fetch('http://localhost:8000/add-to-cart/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`, 
+          },
+          body: JSON.stringify(cartData), 
+        });
+
+        const responseData = await response.json();
+        if (response.ok) {
+          alert('Товар успешно добавлен в корзину!');
+        } else {
+          // Попробуем красиво разобрать сообщение об ошибке
+          if (Array.isArray(responseData.detail)) {
+            const messages = responseData.detail.map((d) => d.msg || JSON.stringify(d)).join('\n');
+            alert(`Ошибка:\n${messages}`);
+          } else if (typeof responseData.detail === 'string') {
+            alert(`Ошибка: ${responseData.detail}`);
+          } else {
+            alert(`Ошибка: ${JSON.stringify(responseData)}`);
+          }
+        }
+        
+      } catch (error) {
+        console.error('Ошибка при отправке данных на сервер:', error);
+        alert('Произошла ошибка при добавлении товара в корзину.');
+      }
     } else {
       alert(`${selectedProduct.name} добавлен в избранное, размер: ${selectedSize}`);
     }
+
     closeModal();
   };
 
@@ -115,6 +163,7 @@ function App() {
           <Routes>
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage onLogin={login} />} />
+            <Route path="/check-email" element={<CheckEmailPage />} />
             <Route
               path="/"
               element={
@@ -125,7 +174,6 @@ function App() {
             />
             <Route path="/brand/:brandName" element={<BrandPage />} />
             <Route path="/cart" element={<CartPage />} />
-            {/*<Route path="/favorites" element={<FavoritesPage />} />*/}
             <Route path="/account" element={<AccountPage />} />
           </Routes>
         </div>
@@ -142,7 +190,7 @@ function App() {
             </div>
             <div className="modal-content">
               <div className="modal-images">
-                {selectedProduct.images.map((image, index) => (
+                {selectedProduct.images && selectedProduct.images.map((image, index) => (
                   <img
                     key={index}
                     src={image}
