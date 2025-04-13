@@ -14,6 +14,10 @@ from generate_jwt import create_acces_tocken, decode_access_token, create_email_
 from fastapi.middleware.cors import CORSMiddleware
 import smtplib
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def send_verification_email(to_email: str, token: str):
     verify_url = f"http://localhost:8000/verify-email?token={token}"
@@ -21,12 +25,12 @@ def send_verification_email(to_email: str, token: str):
 
     msg = MIMEText(body)
     msg["Subject"] = "Подтверждение почты"
-    msg["From"] = "2003kirillgusko@gmail.com"
+    msg["From"] = os.getenv("EMAIL")
     msg["To"] = to_email
 
     with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
         smtp.starttls()
-        smtp.login("2003kirillgusko@gmail.com", "nzgs mgnf ufab ognr")  # см. примечание ниже
+        smtp.login(os.getenv("EMAIL"), "nzgs mgnf ufab ognr")  # см. примечание ниже
         smtp.send_message(msg)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
