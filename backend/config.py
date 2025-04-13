@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     SECRET_KEY: str
     ALGORITHM: str
+    email: str
 
     @property
     def POSTGRES_get_url(self):

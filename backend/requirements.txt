@@ -1,4 +1,5 @@
 fastapi
+uvicorn
 sqlalchemy
 pydantic
 pydantic_settings
@@ -7,4 +8,4 @@ passlib[bcrypt]
 jose
 python-jose
 bcrypt==4.0.1
-smtplib
+python-multipart
